@@ -45,6 +45,13 @@ end MicroprogramController;
 
 architecture Behavioral of MicroprogramController is
 
+component ProgramCounter is
+    Port(
+    RESET <= RESET; 
+    CLK <= CLK
+    );
+
+
 begin
 
 
