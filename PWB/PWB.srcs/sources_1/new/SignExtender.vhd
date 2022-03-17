@@ -42,6 +42,7 @@ Architecture SE_Behavorial of SignExtender is
 
 Begin
 
+
 SignExtender: process(IR)  
 begin
     if IR(8) = '1' then
