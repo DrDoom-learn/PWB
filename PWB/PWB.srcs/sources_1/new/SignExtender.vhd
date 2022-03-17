@@ -31,19 +31,24 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity ZeroFiller is
- Port ( 
- IR: in std_logic_vector (15 downto 0); 
- ZeroFilled_8: out std_logic_vector ( 7 downto 0)
- );
-end ZeroFiller;
 
-architecture Behavioral of ZeroFiller is
+Entity SignExtender is
+port (
+IR: in std_logic_vector (15 downto 0);
+Extended_8: out std_logic_vector ( 7 downto 0)
+);
+End SignExtender;
+Architecture SE_Behavorial of SignExtender is
 
-signal IRsignal: std_logic_vector(2 downto 0);
+Begin
 
+SignExtender: process(IR)  
 begin
-IRsignal <= IR(2 downto 0);
-ZeroFilled_8 <= "00000" & IRsignal;
+    if IR(8) = '1' then
+        Extended_8 <= "111"& IR(7 downto 0);
+        else 
+        Extended_8 <= "000"& IR(7 downto 0);
+    end if;
+end process;
 
-end Behavioral;
+End;
