@@ -1,11 +1,11 @@
 ----------------------------------------------------------------------------------
--- Company: DTU- digital desing
--- Engineer: hold 1
+-- Company: 
+-- Engineer: 
 -- 
 -- Create Date: 10.03.2022 11:23:48
 -- Design Name: 
 -- Module Name: Instruction Register - Behavioral
--- Project Name: PWB
+-- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
 -- Description: 
@@ -42,17 +42,7 @@ IR: out std_logic_vector (15 downto 0)
 End InstructionRegister;
 Architecture IR_Behavorial of InstructionRegister is
 
-Begin
 
-InstructionReg: process(reset,clk)                    --InstructionReg 
-begin 
-    if Reset ='1' then					    -- Asynchrounes reset
-		IR <=x"0000";
-	elsif clk'event and clk='1' then
-		if IL = '1' then                 -- check for tilhørende load værdi
-			IR <= Instruction_In;                    -- Instruction_In indsættes på IR     
-	    end if;
-	end if;
-end process;
+Begin
 
 End;
