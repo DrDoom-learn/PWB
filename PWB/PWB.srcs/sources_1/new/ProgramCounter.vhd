@@ -50,7 +50,7 @@ begin
 	elsif clk'event and clk='1' then
 		if PS = "00" then                 -- Hold PC
 	          PC_sig := PC_sig;
-		elsif PS = "01" then              -- Increment PC +1
+		elsif PS = "01" then              -- Increment PC + 1
 		      PC_sig := PC_sig + x"01";	
 		elsif PS = "10" then              -- Offset PC
 		      PC_sig := PC_sig + Offset;

@@ -33,9 +33,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity ZeroFiller is
  Port ( 
- IR: in std_logic_vector (15 downto 0); 
- ZeroFilled_8: out std_logic_vector ( 7 downto 0)
- );
+    IR: in std_logic_vector (15 downto 0); 
+    ZeroFilled_8: out std_logic_vector ( 7 downto 0)
+    );
 end ZeroFiller;
 
 architecture Behavioral of ZeroFiller is
