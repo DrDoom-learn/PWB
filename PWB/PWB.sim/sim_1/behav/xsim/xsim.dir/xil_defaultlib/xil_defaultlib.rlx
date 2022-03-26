@@ -2,13 +2,13 @@
 2018.3
 Dec  7 2018
 00:33:28
-C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/imports/new/IDC_TB.vhd,1648291896,vhdl,,,,instruction_decoder_tb,,,,,,,,
+C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/imports/new/IDC_TB.vhd,1648296525,vhdl,,,,instruction_decoder_tb,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/imports/new/TB_ProgramCounter.vhd,1648202150,vhdl,,,,programcounter_tb,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/new/TB_InstructionRegister.vhd,1648202590,vhdl,,,,instructionregister_tb,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/new/TB_SignExtender.vhd,1648200772,vhdl,,,,signextender_tb,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sim_1/new/TB_ZeroFiller.vhd,1648201146,vhdl,,,,zerofiller_tb,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/Instruction Register.vhd,1647534411,vhdl,,,,instructionregister,,,,,,,,
-C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/Instruction_Decoder.vhd,1648291866,vhdl,,,,instruction_decoder,,,,,,,,
+C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/Instruction_Decoder.vhd,1648295164,vhdl,,,,instruction_decoder,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/MicroprogramController.vhd,1648120989,vhdl,,,,microprogramcontroller,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/ProgramCounter.vhd,1647814128,vhdl,,,,programcounter,,,,,,,,
 C:/Users/mathi/Documents/DTU/4/62711_Digital_Systems_design/Vivado_projects/PWB/PWB/PWB.srcs/sources_1/new/SignExtender.vhd,1648200734,vhdl,,,,signextender,,,,,,,,

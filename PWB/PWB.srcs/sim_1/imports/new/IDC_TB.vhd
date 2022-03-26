@@ -32,9 +32,7 @@ architecture bench of Instruction_Decoder_tb is
   signal DX,AX,BX,FS: std_logic_vector ( 3 downto 0);
   signal MB,MD,RW,MM,MW: std_logic;
 
-  constant clk_period: time := 5 ns;
-  signal stop_the_clock: boolean;
-  signal end_test: std_logic;
+  constant clk_period: time := 1 ns;
 
 begin
 
@@ -65,89 +63,46 @@ begin
         wait for Clk_period/2;
    end process;
 
-  stimulus: process
+ stimulus: process
   begin
-      
+
       Reset <= '1';
-  
+
   wait for clk_period;
-  
-      Reset <= '0';      
+
+      Reset <= '0';
+
+      --add
+      IR <= "0000010" & "000" & "000" & "000";
+      wait for clk_period;
+      wait for clk_period;
+      --branch on zero 
+      IR <= "1100001" & "000" & "000" & "000";
+      N <= '1';
+      wait for clk_period;
+      wait for clk_period;
+
+      --LRI
+      IR <= "0010001" & "000" & "000" & "000";
+      wait for clk_period;
+      wait for clk_period;
+
+      --SRM
+      wait for clk_period;
       IR <= "0001101" & "000" & "000" & "000";
       Z <= '0';
       wait for clk_period;
+      wait for clk_period;
       Z <= '1';
       wait for clk_period;
-   
+
       wait for clk_period;
-      
+
       wait for clk_period;
-      
+
       wait for clk_period;
       Z <= '0';
---      IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '1';
-      
---        wait for clock_period;
---      IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '0';
-              
---        wait for clock_period;
---      IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '1';
-      
---        wait for clock_period;
---      IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '0';
-      
---        wait for clock_period;
---      IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '0';
-       
---        wait for clock_period;
---       IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '1';
---             wait for clock_period;
---       IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= '0';
---              wait for clock_period;
---       IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= 'X';
---              wait for clock_period;
---       IR <= "0001101" & "000" & "000" & "000";
---      V <= '0';
---      C <= '0';
---      N <= '0';
---      Z <= 'X';
---              wait for clock_period;
-    
-    -- Put test bench stimulus code here
 
-  end_test <= '0';
     wait;
   end process;
 

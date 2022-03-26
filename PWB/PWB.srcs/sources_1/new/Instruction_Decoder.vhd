@@ -56,7 +56,7 @@ begin
         begin 
             if  RESET = '1'  then -- reset
             state <= inf; -- Go to inf state when reset = 1
-                elsif clk'event and clk <= '1' then
+                elsif rising_edge(clk) then
             state <= ns; -- else go to next state
         end if;
     end process;
@@ -84,114 +84,530 @@ state_dec:process(state)
           --- **EX0** ---
         when EX0 =>    --- EX0 -> INF
             if IR(15 downto 9)="0000000"  then 
-                IL<='0'; PS<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf;  -- 1 MOVA
-            elsif IR(15 downto 9)="0000001"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0001"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 2 INC
-            elsif IR(15 downto 9)="0000010"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="0010"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 3 ADD
-            elsif IR(15 downto 9)="0000101"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="0101"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 4 SUB
-            elsif IR(15 downto 9)="0000110"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 5 DEC
-            elsif IR(15 downto 9)="0001000"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="1000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 6 OR
-            elsif IR(15 downto 9)="0001001"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="1001"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 7 AND
-            elsif IR(15 downto 9)="0001010"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="1010"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 8 XOR
-            elsif IR(15 downto 9)="0001011"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="1011"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 9 NOT
-            elsif IR(15 downto 9)="0001100"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('X' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="1100"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 10 MOVB
-            elsif IR(15 downto 9)="0010000"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="XXXX"; MD<='1'; RW<='1'; MM<='0'; MW<='0'; ns <= inf; -- 11 LD
-            elsif IR(15 downto 9)="0100000"  then 
-                IL<='0'; ps<="01"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('0' & IR(2 downto 0)); MB<='0'; FS<="XXXX"; MD<='X'; RW<='0'; MM<='0'; MW<='1'; ns <= inf; -- 12 ST
-            elsif IR(15 downto 9)="1001100"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('X' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="1100"; MD<='0'; RW<='1'; MM<='0'; MW<='0'; ns <= inf; -- 13 LDI
-            elsif IR(15 downto 9)="1000010"  then 
-                IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="0010"; MD<='0'; RW<='1'; MM<='0'; MW<='0'; ns <= inf; -- 14 ADI
-            elsif IR(15 downto 9)="1100000" and Z='1'  then 
-                IL<='0'; ps<="10"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='X'; RW<='0'; MM<='0'; MW<='0'; ns <= inf; -- 15 BRZ
-            elsif IR(15 downto 9)="1100000" and Z='0'  then 
-                IL<='0'; ps<="01"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='X'; RW<='0'; MM<='0'; MW<='0'; ns <= inf; -- 16 BRZ
-            elsif IR(15 downto 9)="1100001" and N='1'  then 
-                IL<='0'; ps<="10"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='X'; RW<='0'; MM<='0'; MW<='0'; ns <= inf; -- 17 BRN
-            elsif IR(15 downto 9)="1100001" and N='0'  then 
-                IL<='0'; ps<="01"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='X'; RW<='0'; MM<='0'; MW<='0'; ns <= inf; -- 18 BRN
-            elsif IR(15 downto 9)="1110000" then 
-                IL<='0'; ps<="11"; DX<=('X' & IR(8 downto 6)); AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='X'; RW<='0'; MM<='0'; MW<='0'; ns <= inf; -- 19 JMP
+                IL<='0'; 
+                PS<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; FS<="0000"; MD<='0'; 
+                RW<='1'; MM<='X'; 
+                MW<='0'; 
+                ns <= inf;  -- 1 MOVA
+                
+            elsif IR(15 downto 9)="0000001"  then -- 2 INC
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0001"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0000010"  then -- 3 ADD
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="0010"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0000101"  then -- 4 SUB
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="0101"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0000110"  then -- 5 DEC
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0110"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0001000"  then -- 6 OR
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="1000"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0001001"  then -- 7 AND
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="1001"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0001010"  then -- 8 XOR
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="1010"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0001011"  then -- 9 NOT
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; FS<="1011"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0001100"  then -- 10 MOVB
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('X' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; FS<="1100"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0010000"  then -- 11 LD
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="XXXX"; 
+                MD<='1'; 
+                RW<='1'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="0100000"  then -- 12 ST
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('0' & IR(2 downto 0)); 
+                MB<='0'; 
+                FS<="XXXX"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='1'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1001100"  then -- 13 LDI
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('X' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='1'; 
+                FS<="1100"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1000010"  then -- 14 ADI
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('0' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='1'; 
+                FS<="0010"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1100000" and Z='1'  then -- 15 BRZ
+                IL<='0'; 
+                ps<="10"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1100000" and Z='0'  then -- 16 BRZ
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1100001" and N='1'  then -- 17 BRN
+                IL<='0'; 
+                ps<="10"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1100001" and N='0'  then -- 18 BRN
+                IL<='0'; 
+                ps<="01"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
+                
+            elsif IR(15 downto 9)="1110000" then -- 19 JMP
+                IL<='0'; 
+                ps<="11"; 
+                DX<=('X' & IR(8 downto 6)); 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='X'; 
+                RW<='0'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= inf; 
                  
            
            --- EXO -> INF
-               elsif IR(15 downto 9)="0001101" and Z='1' then IL<='0'; PS<="01"; DX<="1000"; AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf;  -- 23 SRM(2)
-            elsif IR(15 downto 9)="0001110" and V='X' and C='X' and N='X' and Z='1' then IL<='0'; ps<="01"; DX<="1000"; AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf;  -- 31 SLM(2)
+            elsif IR(15 downto 9)="0001101" and Z='1' then -- 23 SRM(2)
+            IL<='0'; 
+            PS<="01"; 
+            DX<="1000"; 
+            AX<=('0' & IR(5 downto 3)); 
+            BX<=('X' & IR(2 downto 0)); 
+            MB<='X'; 
+            FS<="0000"; 
+            MD<='0'; 
+            RW<='1'; 
+            MM<='X'; 
+            MW<='0'; 
+            ns <= inf;  
+            
+            elsif IR(15 downto 9)="0001110" and Z='1' then  -- 31 SLM(2)
+            IL<='0'; 
+            ps<="01"; 
+            DX<="1000"; 
+            AX<=('0' & IR(5 downto 3)); 
+            BX<=('X' & IR(2 downto 0)); 
+            MB<='X'; 
+            FS<="0000"; 
+            MD<='0'; 
+            RW<='1'; 
+            MM<='X'; 
+            MW<='0'; 
+            ns <= inf; 
                     
            --- EX0 -> EX1
-             elsif IR(15 downto 9)="0010001" then 
-                IL<='0'; PS<="00"; DX<="1000"; AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='1'; RW<='1'; MM<='0'; MW<='0'; ns <= EX1;  -- 20 LRI(1)
+             elsif IR(15 downto 9)="0010001" then -- 20 LRI(1)
+                IL<='0'; 
+                PS<="00";
+                DX<="1000"; 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='1'; 
+                RW<='1'; 
+                MM<='0'; 
+                MW<='0'; 
+                ns <= EX1;  
              
-             elsif IR(15 downto 9)="0001101" and Z='0' then 
-                IL<='0'; PS<="00"; DX<="1000"; AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= EX1;  -- 22 SRM(1) 
+             elsif IR(15 downto 9)="0001101" and Z='0' then -- 22 SRM(1) 
+                IL<='0'; 
+                PS<="00"; 
+                DX<="1000"; 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
+                ns <= EX1;  
              
-             elsif IR(15 downto 9)="0001110" and Z='0' then
-                IL<='0'; ps<="00"; DX<="1000"; AX<=('0' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0';  -- 30 SLM(1)
-                 else IL<='X'; ps<="XX"; DX<=('X' & IR(8 downto 6)); AX<="XXXX"; BX<="XXXX"; MB<='X'; FS<="XXXX"; MD<='X'; RW<='X'; MM<='X'; MW<='X'; ns<=INF;
+             elsif IR(15 downto 9)="0001110" and Z='0' then -- 30 SLM(1)
+                IL<='0'; 
+                ps<="00"; 
+                DX<="1000"; 
+                AX<=('0' & IR(5 downto 3)); 
+                BX<=('X' & IR(2 downto 0)); 
+                MB<='X'; 
+                FS<="0000"; 
+                MD<='0'; 
+                RW<='1'; 
+                MM<='X'; 
+                MW<='0'; 
           
            end if;
            
            --- **EX1** ---
         when EX1 =>  --- EX1 -> EX2
-               if IR(15 downto 9)="0001101" and Z='0' then 
-                    IL<='0'; PS<="00"; DX<="1001"; AX<=('X' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="1100"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= EX2;  -- 24 SRM(3)
-               elsif IR(15 downto 9)="0001110" and Z='0' then 
-                    IL<='0'; ps<="00"; DX<="1001"; AX<=('X' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="1100"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= EX2;  -- 32 SLM(3)
+               if IR(15 downto 9)="0001101" and Z='0' then -- 24 SRM(3)
+                    IL<='0'; 
+                    PS<="00"; 
+                    DX<="1001"; 
+                    AX<=('X' & IR(5 downto 3)); 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='1'; 
+                    FS<="1100"; 
+                    MD<='0'; 
+                    RW<='1';
+                    MM<='X';
+                    MW<='0'; 
+                    ns <= EX2;  
+                    
+               elsif IR(15 downto 9)="0001110" and Z='0' then -- 32 SLM(3)
+                    IL<='0'; 
+                    ps<="00"; 
+                    DX<="1001"; 
+                    AX<=('X' & IR(5 downto 3)); 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='1'; 
+                    FS<="1100"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MM<='X'; 
+                    MW<='0'; 
+                    ns <= EX2;  
                     
                      --- EX1 -> INF 
                elsif IR(15 downto 9)="0001101" and  Z='1' then 
-                    IL<='0'; PS<="01"; DX<="1001"; AX<=('X' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="1100"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf;  -- 25 SRM(4)
+                    IL<='0'; 
+                    PS<="01"; 
+                    DX<="1001"; 
+                    AX<=('X' & IR(5 downto 3)); 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='1'; 
+                    FS<="1100"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MM<='X'; 
+                    MW<='0'; 
+                    ns <= inf;  -- 25 SRM(4)
             
             elsif IR(15 downto 9)="0001110" and Z='1' then 
-                    IL<='0'; ps<="01"; DX<="1001"; AX<=('X' & IR(5 downto 3)); BX<=('X' & IR(2 downto 0)); MB<='1'; FS<="1100"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 31 SLM(4)
+                    IL<='0'; 
+                    ps<="01"; 
+                    DX<="1001"; 
+                    AX<=('X' & IR(5 downto 3)); 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='1'; FS<="1100"; 
+                    MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 31 SLM(4)
             
             elsif IR(15 downto 9)="0010001" then 
-                    IL<='0'; PS<="01"; DX<=('0' & IR(8 downto 6)); AX<="1000"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='1'; RW<='1'; MM<='0'; MW<='0'; ns <= inf;  -- 21 LRI(2)
---             else IL<='X'; ps<="XX"; DX<=('X' & IR(8 downto 6)); AX<="XXXX"; BX<="XXXX"; MB<='X'; FS<="XXXX"; MD<='X'; RW<='X'; MM<='X'; MW<='X';
---           ns<=inf;
+                    IL<='0'; 
+                    PS<="01"; 
+                    DX<=('0' & IR(8 downto 6)); 
+                    AX<="1000"; 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='X'; 
+                    FS<="0000"; 
+                    MD<='1'; 
+                    RW<='1'; 
+                    MM<='0'; 
+                    MW<='0'; 
+                    ns <= inf;  -- 21 LRI(2)        
            end if;
          
             
            --- **EX2** ---
         when EX2 => --- EX2 -> EX3  
-               if IR(15 downto 9)="0001110" then
-                 IL<='0'; ps<="00"; DX<="1000"; AX<=('X' & IR(5 downto 3)); BX<="1000"; MB<='0'; FS<="1110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX3;  -- 32 SLM(5)
-               elsif IR(15 downto 9)="0001101" then 
-                 IL<='0'; PS<="00"; DX<="1000"; AX<=('X' & IR(5 downto 3)); BX<="1000"; MB<='0'; FS<="1101"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX3; -- 26 SRM(5)
+               if IR(15 downto 9)="0001110" then -- 32 SLM(5)
+                 IL<='0'; 
+                 ps<="00"; 
+                 DX<="1000"; 
+                 AX<=('X' & IR(5 downto 3)); 
+                 BX<="1000"; 
+                 MB<='0'; 
+                 FS<="1110"; 
+                 MD<='0'; 
+                 RW<='1'; 
+                 MM<='X'; 
+                 MW<='0'; 
+                 ns<=EX3;  
+                 
+               elsif IR(15 downto 9)="0001101" then  -- 26 SRM(5)
+                 IL<='0'; 
+                 PS<="00"; 
+                 DX<="1000"; 
+                 AX<=('X' & IR(5 downto 3)); 
+                 BX<="1000"; 
+                 MB<='0'; 
+                 FS<="1101"; 
+                 MD<='0'; 
+                 RW<='1'; 
+                 MM<='X'; 
+                 MW<='0'; 
+                 ns<=EX3;
                end if;
    
    
            --- **EX3** ---   
         when EX3 => --- EX3 -> EX4 
                if IR(15 downto 9)="0001110" and Z='1' then 
-                    IL<='0'; ps<="00"; DX<="1001"; AX<="1001"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX4;  -- 34 SLM(7)
+                    IL<='0'; 
+                    ps<="00"; 
+                    DX<="1001"; 
+                    AX<="1001"; 
+                    BX<=('X' & IR(2 downto 0)); 
+                    FS<="0110"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MW<='0'; 
+                    ns<=EX4;  -- 34 SLM(7)
            
-               elsif IR(15 downto 9)="0001101" and Z='1' then 
-                    IL<='0'; PS<="00"; DX<="1001"; AX<="1001"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX4;  -- 28 SRM(7)
+               elsif IR(15 downto 9)="0001101" and Z='1' then -- 28 SRM(7)
+                    IL<='0'; 
+                    PS<="00"; 
+                    DX<="1001"; 
+                    AX<="1001"; 
+                    BX<=('X' & IR(2 downto 0));
+                    MB<='X'; 
+                    FS<="0110"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MM<='X'; 
+                    MW<='0'; 
+                    ns<=EX4;  
             
            --- EX3 -> EX2
-                elsif IR(15 downto 9)="0001110" and Z='0' then 
-                    IL<='0'; ps<="00"; DX<="1001"; AX<="1001"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX2; -- 33 SLM(6
+                elsif IR(15 downto 9)="0001110" and Z='0' then -- 33 SLM(6)
+                    IL<='0'; 
+                    ps<="00"; 
+                    DX<="1001"; 
+                    AX<="1001"; 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='X'; 
+                    FS<="0110"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MM<='X'; 
+                    MW<='0'; 
+                    ns<=EX2; 
                 
-                elsif IR(15 downto 9)="0001101" and Z='0' then 
-                    IL<='0'; PS<="00"; DX<="1001"; AX<="1001"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0110"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns<=EX2; -- 27 SRM(6)
+                elsif IR(15 downto 9)="0001101" and Z='0' then -- 27 SRM(6)
+                    IL<='0'; 
+                    PS<="00"; 
+                    DX<="1001"; 
+                    AX<="1001"; 
+                    BX<=('X' & IR(2 downto 0)); 
+                    MB<='X'; 
+                    FS<="0110"; 
+                    MD<='0'; 
+                    RW<='1'; 
+                    MM<='X'; 
+                    MW<='0'; 
+                    ns<=EX2; 
               end if;
        
            --- **EX4** --- 
         when EX4 => --- EX4 -> INF
-               if IR(15 downto 9)="0001101" and V='X' and C='X' and N='X' and Z='X' then IL<='0'; PS<="01"; DX<=('0' & IR(8 downto 6)); AX<="1000"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf;  -- 29 SRM(8)
-            elsif IR(15 downto 9)="0001110" and V='X' and C='X' and N='X' and Z='X' then IL<='0'; ps<="01"; DX<=('0' & IR(8 downto 6)); AX<="1000"; BX<=('X' & IR(2 downto 0)); MB<='X'; FS<="0000"; MD<='0'; RW<='1'; MM<='X'; MW<='0'; ns <= inf; -- 35 SLM(8
---             else IL<='X'; ps<="XX"; DX<=('X' & IR(8 downto 6)); AX<="XXXX"; BX<="XXXX"; MB<='X'; FS<="XXXX"; MD<='X'; RW<='X'; MM<='X'; MW<='X';
-           end if;
+               if IR(15 downto 9)="0001101" then -- 29 SRM(8)
+                 IL<='0'; 
+                 PS<="01"; 
+                 DX<=('0' & IR(8 downto 6)); 
+                 AX<="1000"; 
+                 BX<=('X' & IR(2 downto 0)); 
+                 MB<='X'; 
+                 FS<="0000"; 
+                 MD<='0'; 
+                 RW<='1'; 
+                 MM<='X'; 
+                 MW<='0'; 
+                 ns <= inf;  
+               
+              elsif IR(15 downto 9)="0001110" then -- 35 SLM(8
+                 IL<='0'; 
+                 ps<="01"; 
+                 DX<=('0' & IR(8 downto 6)); 
+                 AX<="1000"; 
+                 BX<=('X' & IR(2 downto 0)); 
+                 MB<='X'; 
+                 FS<="0000"; 
+                 MD<='0'; 
+                 RW<='1'; 
+                 MM<='X';
+                 MW<='0'; 
+                 ns <= inf; 
+              end if;
         
             when others =>
             ns <= inf;
