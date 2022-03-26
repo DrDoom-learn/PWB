@@ -48,17 +48,18 @@ begin
 
   stimulus: process
   begin
+  wait for Clk_period;
   IL <= '0';
-  Instruction_In <= x"0000";
+  reset <= '0';
+  wait for Clk_period;
   reset <= '1';
   wait for Clk_period;
   reset <= '0';
-  wait for Clk_period;
-  Instruction_In <= x"00FA";
+  Instruction_In <= x"0A10";
   IL <= '1';
   wait for Clk_period;
   IL <= '0';
-  wait for Clk_period;
+  wait for 2*Clk_period;
   Reset <= '1';
   Wait for Clk_period;
   Reset <= '0';

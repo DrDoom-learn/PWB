@@ -65,18 +65,24 @@ begin
     wait for Clk_period;
     
     PS <= "01"; -- Increment PC
+    wait for 3*Clk_period;
+    
+    PS <= "00"; 
     wait for Clk_period;
     
     PS <= "10"; -- Branch to PC + Offset
     wait for Clk_period;
     
-    PS <= "11"; -- Jump to Address_In
+    PS <= "00"; 
+    wait for 2*Clk_period;
+    
+    PS <= "11";  -- Jump to Address_In
     wait for Clk_period;
     
+    PS <= "01";
     RESET <= '1';
     wait for Clk_period;
     RESET <= '0';
-    PS <= "01";
     wait for Clk_period*4;
     
     

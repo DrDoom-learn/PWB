@@ -40,10 +40,9 @@ end ZeroFiller;
 
 architecture Behavioral of ZeroFiller is
 
-signal IRsignal: std_logic_vector(2 downto 0);
 
 begin
-IRsignal <= IR(2 downto 0);
-ZeroFilled_8 <= "00000" & IRsignal;
+
+ZeroFilled_8 <= "00000" & IR(2 downto 0);
 
 end Behavioral;

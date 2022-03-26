@@ -1,0 +1,7 @@
+# compile vhdl design source files
+vhdl xil_defaultlib  \
+"../../../../PWB.srcs/sources_1/new/ZeroFiller.vhd" \
+"../../../../PWB.srcs/sim_1/new/TB_ZeroFiller.vhd" \
+
+# Do not sort compile order
+nosort

@@ -38,6 +38,8 @@ IR: in std_logic_vector (15 downto 0);
 Extended_8: out std_logic_vector ( 7 downto 0)
 );
 End SignExtender;
+
+
 Architecture SE_Behavorial of SignExtender is
 
 Begin
@@ -46,9 +48,9 @@ Begin
 SignExtender: process(IR)  
 begin
     if IR(8) = '1' then
-        Extended_8 <= "111"& IR(7 downto 0);
+        Extended_8 <= "111"& IR(7 downto 6) & IR(2 downto 0);
         else 
-        Extended_8 <= "000"& IR(7 downto 0);
+        Extended_8 <= "000"& IR(7 downto 6) & IR(2 downto 0);
     end if;
 end process;
 
